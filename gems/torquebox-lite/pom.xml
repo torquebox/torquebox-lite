@@ -1,0 +1,98 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>rubygems</groupId>
+    <artifactId>torquebox-lite-gems-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>torquebox-lite</artifactId>
+  <packaging>gem</packaging>
+  <name>TorqueBox Lite Gem</name>
+  <description />
+  <url>http://torquebox.org/</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.torquebox</groupId>
+      <artifactId>torquebox-lite-build-assembly</artifactId>
+      <version>${project.version}</version>
+      <type>pom</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>torquebox-core</artifactId>
+      <version>${version.torquebox}</version>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>torquebox-rake-support</artifactId>
+      <version>${version.torquebox}</version>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>torquebox-web</artifactId>
+      <version>${version.torquebox}</version>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>thor</artifactId>
+      <version>0.14.6</version>
+      <type>gem</type>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>de.saumya.mojo</groupId>
+        <artifactId>gem-maven-plugin</artifactId>
+        <configuration>
+          <extraFiles>jboss/**/*</extraFiles>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-package</id>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>de.saumya.mojo</groupId>
+        <artifactId>jruby-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-jboss-and-share</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>jruby</goal>
+            </goals>
+            <configuration>
+              <script>
+                require 'fileutils'
+                def cp( src, dest )
+                  puts %Q(copying #{src} to #{dest})
+                  FileUtils.mkdir_p( dest )
+                  FileUtils.cp_r( src, dest )
+                end
+                cp( %Q(${basedir}/../../build/assembly/target/stage/torquebox/jboss),
+                    %Q(${basedir}/target/torquebox-lite) )
+              </script>
+            </configuration>
+          </execution>
+          <execution>
+            <id>install-gem</id>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

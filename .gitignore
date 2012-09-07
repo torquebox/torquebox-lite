@@ -1,0 +1,15 @@
+target
+*.swp
+*.iml
+*.ipr
+*.iws
+*.log
+.loadpath
+.classpath
+.settings
+.project
+.idea
+*~
+TAGS
+Gemfile.lock
+.DS_Store
