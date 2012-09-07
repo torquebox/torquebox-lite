@@ -42,6 +42,7 @@ class Assembler
     # install_gems
     transform_config
     transform_modules
+    transform_standalone_conf
     clean_filesystem
   end
 
@@ -93,6 +94,22 @@ class Assembler
     doc.root.delete_element("dependencies/module[@name='org.hornetq']")
     open(jts_module, 'w') do |file|
       doc.write(file, 4)
+    end
+  end
+
+  def transform_standalone_conf
+    conf_file = "#{@jboss_dir}/bin/standalone.conf"
+    contents = File.read(conf_file)
+    contents.sub!(/-XX:MaxPermSize=\d+./, '-XX:MaxPermSize=128m')
+    File.open(conf_file, 'w') do |file|
+      file.write(contents)
+    end
+
+    conf_file = "#{@jboss_dir}/bin/standalone.conf.bat"
+    contents = File.read(conf_file)
+    contents.sub!(/-XX:MaxPermSize=\d+./, '-XX:MaxPermSize=128m')
+    File.open(conf_file, 'w') do |file|
+      file.write(contents)
     end
   end
 

@@ -94,10 +94,27 @@ class TorqueBoxLiteCommand < Thor
       options[:pass_through] << " -Djboss.server.base.dir=#{base_dir}"
       options[:pass_through] << " -Djboss.server.config.dir=#{config_dir}"
 
+      options[:jvm_options] ||= ''
+      options[:jvm_options] << " #{strip_jvm_properties_from_jruby_opts}"
+
       Dir.chdir(TorqueBox::DeployUtils.jboss_home) do
         TorqueBox::DeployUtils.set_java_opts("#{options[:jvm_options]} #{TorqueBox::DeployUtils.jruby_opts_properties}")
         TorqueBox::DeployUtils.exec_command(TorqueBox::DeployUtils.run_command_line(options).join(' '))
       end
+    end
+
+    def strip_jvm_properties_from_jruby_opts
+      jruby_opts = ENV['JRUBY_OPTS']
+      return '' if jruby_opts.nil?
+      jvm_properties = []
+      properties = jruby_opts.split(' ')
+      properties.each do |property|
+        if property =~ /^-J.+/
+          jvm_properties << property.sub(/-J/, '')
+          ENV['JRUBY_OPTS'].sub(property, '')
+        end
+      end
+      jvm_properties.join(' ')
     end
   }
 end
