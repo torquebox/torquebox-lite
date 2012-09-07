@@ -36,9 +36,9 @@ torquebox-lite` to boot the server.
 
     JRUBY_OPTS="-J-Xmx1024m" torquebox-lite
 
-### Bind to 0.0.0.0 instead of localhost
+### Bind to 0.0.0.0 instead of localhost and port 3000
 
-    torquebox-lite -b 0.0.0.0
+    torquebox-lite -b 0.0.0.0 -p 3000
 
 ### Get a listing of all torquebox-lite options
 
