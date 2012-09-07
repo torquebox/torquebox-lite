@@ -111,7 +111,7 @@
         <repository>
           <id>projectodd-release</id>
           <name>projectodd release</name>
-          <url>https://repository-projectodd.forge.cloudbees.com/release</url>
+          <url>http://repository-projectodd.forge.cloudbees.com/release</url>
           <layout>default</layout>
           <releases>
             <enabled>true</enabled>
@@ -392,7 +392,7 @@
     <version.jruby-maven-plugins>0.28.4</version.jruby-maven-plugins>
     <version.junit>4.7</version.junit>
 
-    <version.torquebox>2.1.2-SNAPSHOT</version.torquebox>
+    <version.torquebox>2.1.1</version.torquebox>
 
     <version.rspec>2.7.0</version.rspec>
   </properties>
