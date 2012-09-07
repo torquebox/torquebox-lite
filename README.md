@@ -17,5 +17,9 @@ data, temporary files, and server logs.
 
 * torquebox-lite
 
+If using Bundler, add `torquebox-lite` to your `Gemfile` instead of
+installing it via `gem install` and then run `bundle exec
+torquebox-lite` to boot the server.
+
 
 [torquebox]: http://torquebox.org
