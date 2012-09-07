@@ -9,17 +9,39 @@ the application in the current directory. It creates a
 `torquebox-lite` directory inside this application to hold session
 data, temporary files, and server logs.
 
-## Usage
+The underlying bits are identical to those in TorqueBox, except that
+many things have been removed. You can still create a `torquebox.yml`
+or `torquebox.rb` file to configure Ruby versions, environment
+variables, shared vs bounded JRuby pooling, web context, and various
+other things. See the [TorqueBox documentation][] for more details
+there.
 
-* jruby -S gem install torquebox-lite
+## Basic Usage
 
-* cd /path/to/your_app
-
-* torquebox-lite
+    jruby -S gem install torquebox-lite
+    cd /path/to/your_app
+    torquebox-lite
 
 If using Bundler, add `torquebox-lite` to your `Gemfile` instead of
 installing it via `gem install` and then run `bundle exec
 torquebox-lite` to boot the server.
 
+## More Usage Examples
+
+### Run in production mode with JRuby 1.9 compatibility
+
+    export JRUBY_OPTS="--1.9"
+    RAILS_ENV=production torquebox-lite
+
+### Bind to 0.0.0.0 instead of localhost
+
+    torquebox-lite -b 0.0.0.0
+
+### Get a listing of all torquebox-lite options
+
+    torquebox-lite help run
+    
+
 
 [torquebox]: http://torquebox.org
+[torquebox documentation]: http://torquebox.org/documentation/current/
