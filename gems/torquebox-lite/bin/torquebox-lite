@@ -34,6 +34,7 @@ class TorqueBoxLiteCommand < Thor
   method_option 'extra', :aliases => '-e', :type => :string, :desc => 'Extra options to pass through to JBoss AS, you will need to escape dashes with \ (e.g. \--help)'
   method_option 'max-threads', :type => :numeric, :desc => "Maximum number of HTTP threads"
   method_option 'bind-address', :aliases => '-b', :type => :string, :desc => "IP address to bind to"
+  method_option 'port', :aliases => '-p', :type => :numeric, :desc => "HTTP port to listen on"
   method_option 'node-name', :type => :string, :desc => 'Override the name of the node (which by default is the hostname)'
   method_option 'port-offset', :type => :numeric, :desc => 'Offset all port numbers listened on by TorqueBox Lite by this number'
   method_option 'jvm-options', :aliases => '-J', :type => :string, :desc => 'Pass options on to the JVM'
@@ -41,6 +42,7 @@ class TorqueBoxLiteCommand < Thor
     setup_environment
     run_server(:max_threads => options['max-threads'],
                :bind_address => options['bind-address'],
+               :port => options['port'],
                :port_offset => options['port-offset'],
                :pass_through => options['extra'],
                :node_name => options['node-name'],
@@ -93,6 +95,7 @@ class TorqueBoxLiteCommand < Thor
       options[:pass_through] ||= ''
       options[:pass_through] << " -Djboss.server.base.dir=#{base_dir}"
       options[:pass_through] << " -Djboss.server.config.dir=#{config_dir}"
+      options[:pass_through] << " -Dtorquebox.http.port=#{options[:port]}" if options[:port]
 
       options[:jvm_options] ||= ''
       options[:jvm_options] << " #{strip_jvm_properties_from_jruby_opts}"
@@ -111,7 +114,7 @@ class TorqueBoxLiteCommand < Thor
       properties.each do |property|
         if property =~ /^-J.+/
           jvm_properties << property.sub(/-J/, '')
-          ENV['JRUBY_OPTS'].sub(property, '')
+          ENV['JRUBY_OPTS'] = ENV['JRUBY_OPTS'].sub(property, '')
         end
       end
       jvm_properties.join(' ')

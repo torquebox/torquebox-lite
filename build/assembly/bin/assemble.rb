@@ -80,6 +80,7 @@ class Assembler
 
     remove_extensions(doc)
     remove_subsystems(doc)
+    adjust_socket_bindings(doc)
     disable_management(doc)
     disable_remote_naming(doc)
 
@@ -242,6 +243,25 @@ class Assembler
         profile.delete_element("subsystem[contains(@xmlns, 'urn:jboss:domain:#{subsystem}:')]")
       end
     end
+  end
+
+  def adjust_socket_bindings(doc)
+    necessary_bindings = %w{
+      http
+      https
+      txn-recovery-environment
+      txn-status-manager
+    }
+    socket_binding_group = doc.root.get_elements('socket-binding-group').first
+    socket_binding_group.delete_element('outbound-socket-binding')
+    socket_bindings = socket_binding_group.elements.map { |e| e.attributes['name'] }
+    socket_bindings.each do |socket_binding|
+      unless necessary_bindings.include?(socket_binding)
+        socket_binding_group.delete_element("socket-binding[@name='#{socket_binding}']")
+      end
+    end
+    http_binding = socket_binding_group.get_elements("socket-binding[@name='http']").first
+    http_binding.attributes['port'] = '${torquebox.http.port:8080}'
   end
 
   def disable_management(doc)
