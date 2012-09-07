@@ -30,8 +30,11 @@ torquebox-lite` to boot the server.
 
 ### Run in production mode with JRuby 1.9 compatibility
 
-    export JRUBY_OPTS="--1.9"
-    RAILS_ENV=production torquebox-lite
+    JRUBY_OPTS="--1.9" RAILS_ENV=production torquebox-lite
+
+### Run with a larger JVM heap size
+
+    JRUBY_OPTS="-J-Xmx1024m" torquebox-lite
 
 ### Bind to 0.0.0.0 instead of localhost
 
