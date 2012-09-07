@@ -27,3 +27,4 @@ Bump the versions for next release
     mvn -B versions:set -DnewVersion=${dev_version}
     find . -name "pom.xml.versionsBackup" | xargs rm
     git commit -am "Prepare for next development iteration"
+    git push
