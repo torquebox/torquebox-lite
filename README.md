@@ -2,7 +2,10 @@
 
 This is a smaller, web-only version of [TorqueBox][]. The main goal is
 to provide a reliable and maintained JRuby web server option with a
-small footprint and very simple usage.
+small footprint and very simple usage. Scheduled jobs, messaging,
+Backgroundable, long-running services, distributed transactions, and
+Infinispan caching, and clustering from TorqueBox will NOT work with
+TorqueBox Lite.
 
 TorqueBox Lite is designed to only run a single application at a time,
 the application in the current directory. It creates a
