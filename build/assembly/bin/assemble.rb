@@ -83,6 +83,7 @@ class Assembler
     adjust_socket_bindings(doc)
     disable_management(doc)
     disable_remote_naming(doc)
+    disable_jsp(doc)
 
     open(config_file, 'w') do |file|
       doc.write(file, 4)
@@ -228,6 +229,7 @@ class Assembler
       security
       transactions
       web
+      torquebox-bootstrap
       torquebox-core
       torquebox-web
     }
@@ -273,6 +275,15 @@ class Assembler
     profiles.each do |profile|
       naming_subsystem = profile.get_elements("subsystem[contains(@xmlns, 'urn:jboss:domain:naming:')]").first
       naming_subsystem.delete_element('remote-naming')
+    end
+  end
+
+  def disable_jsp(doc)
+    profiles = doc.root.get_elements('profile')
+    profiles.each do |profile|
+      web_subsystem = profile.get_elements("subsystem[contains(@xmlns, 'urn:jboss:domain:web:')]").first
+      configuration = web_subsystem.add_element('configuration')
+      jsp_configuration = configuration.add_element('jsp-configuration', 'disabled' => 'true')
     end
   end
 
