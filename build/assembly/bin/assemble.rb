@@ -102,14 +102,14 @@ class Assembler
   def transform_standalone_conf
     conf_file = "#{@jboss_dir}/bin/standalone.conf"
     contents = File.read(conf_file)
-    contents.sub!(/-XX:MaxPermSize=\d+./, '-XX:MaxPermSize=128m')
+    # contents.sub!(/-XX:MaxPermSize=\d+./, '-XX:MaxPermSize=128m')
     File.open(conf_file, 'w') do |file|
       file.write(contents)
     end
 
     conf_file = "#{@jboss_dir}/bin/standalone.conf.bat"
     contents = File.read(conf_file)
-    contents.sub!(/-XX:MaxPermSize=\d+./, '-XX:MaxPermSize=128m')
+    # contents.sub!(/-XX:MaxPermSize=\d+./, '-XX:MaxPermSize=128m')
     File.open(conf_file, 'w') do |file|
       file.write(contents)
     end
