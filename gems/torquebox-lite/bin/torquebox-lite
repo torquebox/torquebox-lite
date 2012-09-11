@@ -115,7 +115,7 @@ class TorqueBoxLiteCommand < Thor
       properties.each do |property|
         if property =~ /^-J.+/
           jvm_properties << property.sub(/-J/, '')
-          ENV['JRUBY_OPTS'] = ENV['JRUBY_OPTS'].sub(property, '')
+          ENV['JRUBY_OPTS'] = ENV['JRUBY_OPTS'].sub(property, '').strip
         end
       end
       jvm_properties.join(' ')
