@@ -33,10 +33,12 @@ class TorqueBoxLiteCommand < Thor
   method_option 'extra', :aliases => '-e', :type => :string, :desc => 'Extra options to pass through to JBoss AS, you will need to escape dashes with \ (e.g. \--help)'
   method_option 'max-threads', :type => :numeric, :desc => "Maximum number of HTTP threads"
   method_option 'bind-address', :aliases => '-b', :type => :string, :desc => "IP address to bind to"
-  method_option 'port', :aliases => '-p', :type => :numeric, :desc => "HTTP port to listen on"
+  method_option 'port', :aliases => '-p', :type => :numeric, :default => 8080, :desc => "HTTP port to listen on"
   method_option 'node-name', :type => :string, :desc => 'Override the name of the node (which by default is the hostname)'
   method_option 'port-offset', :type => :numeric, :desc => 'Offset all port numbers listened on by TorqueBox Lite by this number'
   method_option 'jvm-options', :aliases => '-J', :type => :string, :desc => 'Pass options on to the JVM'
+  method_option 'min-runtimes', :type => :numeric, :default => 1, :desc => 'Min. JRuby runtimes'
+  method_option 'max-runtimes', :type => :numeric, :default => 1, :desc => 'Max. JRuby runtimes'
   def start
     setup_environment
     run_server(:max_threads => options['max-threads'],
@@ -46,7 +48,9 @@ class TorqueBoxLiteCommand < Thor
                :pass_through => options['extra'],
                :node_name => options['node-name'],
                :data_directory => options['data-directory'],
-               :jvm_options => options['jvm-options'])
+               :jvm_options => options['jvm-options'],
+               :min_runtimes => options['min-runtimes'],
+               :max_runtimes => options['max-runtimes'])
   end
 
   no_tasks {
@@ -83,13 +87,7 @@ class TorqueBoxLiteCommand < Thor
       FileUtils.mkdir_p(base_dir)
       FileUtils.mkdir_p(deploy_dir)
 
-      opts = {:root => Dir.pwd, :dest_dir => deploy_dir}
-      descriptor = TorqueBox::DeployUtils.basic_deployment_descriptor(opts)
-      deployed_name = TorqueBox::DeployUtils.deploy_yaml(descriptor, opts).first
-      failed_file = File.join(deploy_dir, "#{deployed_name}.failed")
-      if File.exists?(failed_file)
-        FileUtils.rm(failed_file)
-      end
+      create_deployment_descriptor(options, deploy_dir)
 
       options[:pass_through] ||= ''
       options[:pass_through] << " -Djboss.server.base.dir=#{base_dir}"
@@ -103,6 +101,33 @@ class TorqueBoxLiteCommand < Thor
         # TODO: replace .send(:jruby_opts_properties) with .jruby_opts_properties once TB 2.1.2 is out
         TorqueBox::DeployUtils.set_java_opts("#{options[:jvm_options]} #{TorqueBox::DeployUtils.send(:jruby_opts_properties)}")
         TorqueBox::DeployUtils.exec_command(TorqueBox::DeployUtils.run_command_line(options).join(' '))
+      end
+    end
+
+    def create_deployment_descriptor(options, deploy_dir)
+      opts = {:root => Dir.pwd, :dest_dir => deploy_dir}
+      descriptor = TorqueBox::DeployUtils.basic_deployment_descriptor(opts)
+      min_runtimes = options[:min_runtimes]
+      max_runtimes = options[:max_runtimes]
+      if min_runtimes != 1 && max_runtimes != 1
+        if max_runtimes < 1
+          $stderr.puts 'ERROR: max_runtimes must be greater than 0'
+          exit 1
+        end
+        if max_runtimes < min_runtimes
+          $stderr.puts 'ERROR: max_runtimes must be greater than min_runtimes'
+          exit 1
+        end
+        descriptor['pooling'] = {}
+        descriptor['pooling']['web'] = {}
+        descriptor['pooling']['web']['lazy'] = false
+        descriptor['pooling']['web']['min'] = min_runtimes
+        descriptor['pooling']['web']['max'] = max_runtimes
+      end
+      deployed_name = TorqueBox::DeployUtils.deploy_yaml(descriptor, opts).first
+      failed_file = File.join(deploy_dir, "#{deployed_name}.failed")
+      if File.exists?(failed_file)
+        FileUtils.rm(failed_file)
       end
     end
 
