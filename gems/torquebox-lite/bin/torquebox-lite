@@ -19,7 +19,6 @@
 
 require 'fileutils'
 require 'rubygems'
-gem 'thor', '0.14.6'
 
 require 'thor'
 require 'torquebox-rake-support'
