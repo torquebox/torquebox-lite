@@ -283,7 +283,10 @@ class Assembler
     profiles.each do |profile|
       web_subsystem = profile.get_elements("subsystem[contains(@xmlns, 'urn:jboss:domain:web:')]").first
       configuration = web_subsystem.add_element('configuration')
-      jsp_configuration = configuration.add_element('jsp-configuration', 'disabled' => 'true')
+      jsp_configuration = configuration.get_elements('jsp-configuration').first
+      if jsp_configuration.nil?
+        jsp_configuration = configuration.add_element('jsp-configuration', 'disabled' => 'true')
+      end
     end
   end
 
