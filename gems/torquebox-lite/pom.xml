@@ -26,19 +26,19 @@
     <dependency>
       <groupId>rubygems</groupId>
       <artifactId>torquebox-core</artifactId>
-      <version>${version.torquebox}</version>
+      <version>${version.torquebox.gems}</version>
       <type>gem</type>
     </dependency>
     <dependency>
       <groupId>rubygems</groupId>
       <artifactId>torquebox-rake-support</artifactId>
-      <version>${version.torquebox}</version>
+      <version>${version.torquebox.gems}</version>
       <type>gem</type>
     </dependency>
     <dependency>
       <groupId>rubygems</groupId>
       <artifactId>torquebox-web</artifactId>
-      <version>${version.torquebox}</version>
+      <version>${version.torquebox.gems}</version>
       <type>gem</type>
     </dependency>
     <dependency>
