@@ -92,9 +92,10 @@ class TorqueBoxLiteCommand < Thor
       options[:pass_through] ||= ''
       options[:pass_through] << " -Djboss.server.base.dir=#{base_dir}"
       options[:pass_through] << " -Djboss.server.config.dir=#{config_dir}"
-      options[:pass_through] << " -Dtorquebox.http.port=#{options[:port]}" if options[:port]
 
       options[:jvm_options] ||= ''
+      options[:jvm_options] << " -Dorg.torquebox.core.datasource.enabled=false"
+      options[:jvm_options] << " -Dtorquebox.http.port=#{options[:port]}" if options[:port]
       options[:jvm_options] << " #{strip_jvm_properties_from_jruby_opts}"
 
       Dir.chdir(TorqueBox::DeployUtils.jboss_home) do
@@ -107,6 +108,7 @@ class TorqueBoxLiteCommand < Thor
     def create_deployment_descriptor(options, deploy_dir)
       opts = {:root => Dir.pwd, :dest_dir => deploy_dir}
       descriptor = TorqueBox::DeployUtils.basic_deployment_descriptor(opts)
+
       min_runtimes = options[:min_runtimes]
       max_runtimes = options[:max_runtimes]
       if min_runtimes != 1 && max_runtimes != 1
