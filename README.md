@@ -7,8 +7,8 @@ Backgroundable, long-running services, distributed transactions,
 Infinispan caching, and clustering from TorqueBox will NOT work with
 TorqueBox Lite.
 
-TorqueBox Lite is designed to only run a single application at a time
-- the application in the current directory. It creates a
+TorqueBox Lite is designed to only run a single application at a time -
+the application in the current directory. It creates a
 `torquebox-lite` directory inside this application to hold session
 data, temporary files, and server logs.
 
