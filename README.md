@@ -43,9 +43,13 @@ torquebox-lite` to boot the server.
 
     torquebox-lite -b 0.0.0.0 -p 3000
 
+### Use multiple JRuby runtimes for non-threadsafe applications
+
+    torquebox-lite --min-runtimes=3 --max-runtimes=5
+
 ### Get a listing of all torquebox-lite options
 
-    torquebox-lite help run
+    torquebox-lite --help
     
 
 

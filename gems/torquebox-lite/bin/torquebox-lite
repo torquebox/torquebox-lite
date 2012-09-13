@@ -28,7 +28,7 @@ class TorqueBoxLiteCommand < Thor
   default_task :start
 
   map "run" => "start"
-  desc "run", "Run TorqueBox Lite"
+  desc "", "Run TorqueBox Lite"
   method_option 'data-directory', :type => :string, :desc => 'Override the directory TorqueBox Lite uses to store it runtime data'
   method_option 'extra', :aliases => '-e', :type => :string, :desc => 'Extra options to pass through to JBoss AS, you will need to escape dashes with \ (e.g. \--help)'
   method_option 'max-threads', :type => :numeric, :desc => "Maximum number of HTTP threads"
@@ -51,6 +51,10 @@ class TorqueBoxLiteCommand < Thor
                :jvm_options => options['jvm-options'],
                :min_runtimes => options['min-runtimes'],
                :max_runtimes => options['max-runtimes'])
+  end
+
+  def help
+    self.class.task_help(shell, 'start')
   end
 
   no_tasks {

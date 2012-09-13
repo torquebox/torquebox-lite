@@ -6,6 +6,9 @@
 * Disable the creation of XA datasources since
   `torquebox-transactions` is not used with `torquebox-lite`
 
+* Help is now listed by `torquebox-lite --help` instead of
+  `torquebox-lite help run`
+
 ## 0.1.2
 
 * Disable JSP support in underlying jbossweb
