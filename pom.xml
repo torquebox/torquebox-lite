@@ -10,7 +10,7 @@
 
   <groupId>org.torquebox</groupId>
   <artifactId>torquebox-lite-parent</artifactId>
-  <version>0.1.3-SNAPSHOT</version>
+  <version>0.1.3</version>
   <packaging>pom</packaging>
   <name>TorqueBox Lite</name>
   <url>http://torquebox.org/</url>
