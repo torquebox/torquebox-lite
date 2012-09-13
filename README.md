@@ -19,6 +19,7 @@ variables, shared vs bounded JRuby pooling, web context, and various
 other things. See the [TorqueBox documentation][] for more details
 there.
 
+
 ## Basic Usage
 
     jruby -S gem install torquebox-lite
@@ -50,8 +51,36 @@ torquebox-lite` to boot the server.
 ### Get a listing of all torquebox-lite options
 
     torquebox-lite --help
-    
+
+
+## Need help?
+
+Get in touch with us via the regular [TorqueBox community][] channels -
+IRC, mailing lists, or Twitter.
+
+
+## Found a bug? Have a suggestion?
+
+Because TorqueBox Lite has a separate release cycle and codebase from
+TorqueBox itself, please use GitHub Issues to file bugs and feature
+requests instead of the TorqueBox JIRA.
+
+
+## Want to contribute?
+
+Pull requests are more than welcome. There are really just two Ruby
+files that contain the majority of the code.
+
+* build/assembly/bin/assemble.rb - Transform the stock TorqueBox
+  distribution into our slimmed down version
+
+* gems/torquebox-lite/bin/torquebox-lite - The `torquebox-lite`
+  command which boots TorqueBox Lite
+
+Building TorqueBox Lite requires Maven 3. From the project's root
+directory, just run `mvn install`.
 
 
 [torquebox]: http://torquebox.org
 [torquebox documentation]: http://torquebox.org/documentation/current/
+[torquebox community]: http://torquebox.org/community/
