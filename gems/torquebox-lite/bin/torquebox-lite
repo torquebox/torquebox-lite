@@ -73,6 +73,13 @@ class TorqueBoxLiteCommand < Thor
       end
       home.full_gem_path if home
     rescue Exception => e
+      # User may be using Bundler in standalone mode or something else
+      # funky so fall back to searching the load path
+      $:.each do |path|
+        if path =~ /^(.+torquebox-lite-.+?)\/lib$/
+          return $1
+        end
+      end
       nil
     end
 
