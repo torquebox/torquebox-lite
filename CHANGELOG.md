@@ -1,3 +1,7 @@
+## 0.1.4
+
+* Fall back to locating $TORQUEBOX_HOME via Ruby load path
+
 ## 0.1.3
 
 * Build against a TorqueBox 2.1.2 snapshot but still depend on the
