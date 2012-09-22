@@ -3,6 +3,9 @@
 * Fix Ruby load path issue when running under bundler standalone or
   deployment mode with binstubs
 
+* Gem sized reduced from 47MB to 42MB by getting rid of a few more
+  unnecessary JBoss modules in the TorqueBox distribution
+
 ## 0.1.4
 
 * Fall back to locating $TORQUEBOX_HOME via Ruby load path

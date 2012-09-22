@@ -76,26 +76,28 @@ class Assembler
 
   def transform_config
     config_file = "#{@jboss_dir}/standalone/configuration/standalone.xml"
-    doc = REXML::Document.new(File.read(config_file))
-
-    remove_extensions(doc)
-    remove_subsystems(doc)
-    adjust_socket_bindings(doc)
-    disable_management(doc)
-    disable_remote_naming(doc)
-    disable_jsp(doc)
-
-    open(config_file, 'w') do |file|
-      doc.write(file, 4)
+    edit_xml_file(config_file) do |doc|
+      remove_extensions(doc)
+      remove_subsystems(doc)
+      adjust_socket_bindings(doc)
+      disable_management(doc)
+      disable_remote_naming(doc)
+      disable_jsp(doc)
     end
   end
 
   def transform_modules
-    jts_module = "#{@jboss_dir}/modules/org/jboss/jts/main/module.xml"
-    doc = REXML::Document.new(File.read(jts_module))
-    doc.root.delete_element("dependencies/module[@name='org.hornetq']")
-    open(jts_module, 'w') do |file|
-      doc.write(file, 4)
+    org_dir = "#{@jboss_dir}/modules/org"
+    edit_xml_file("#{org_dir}/jboss/jts/main/module.xml") do |doc|
+      doc.root.delete_element("dependencies/module[@name='org.hornetq']")
+    end
+
+    edit_xml_file("#{org_dir}/torquebox/core/main/module.xml") do |doc|
+      doc.root.delete_element("dependencies/module[@name='org.jboss.as.connector']")
+    end
+
+    edit_xml_file("#{org_dir}/jboss/as/server/main/module.xml") do |doc|
+      doc.root.delete_element("dependencies/module[@name='org.jboss.as.domain-http-interface']")
     end
   end
 
@@ -144,58 +146,87 @@ class Assembler
     FileUtils.rm_rf(File.join(@jboss_dir, 'bin', 'wsprovide.bat'))
     FileUtils.rm_rf(File.join(@jboss_dir, 'bin', 'wsprovide.sh'))
 
-    modules_dir = File.join(@jboss_dir, 'modules')
-    FileUtils.rm_rf(File.join(modules_dir, 'com', 'google'))
-    FileUtils.rm_rf(File.join(modules_dir, 'com', 'h2database'))
-    FileUtils.rm_rf(File.join(modules_dir, 'com', 'sun', 'jsf-impl', '1.2'))
-    FileUtils.rm_rf(File.join(modules_dir, 'com', 'sun', 'xml'))
-    FileUtils.rm_rf(File.join(modules_dir, 'javax', 'faces', 'api', '1.2'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'antlr'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'apache', 'cxf'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'apache', 'httpcomponents'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'apache', 'james'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'apache', 'juddi'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'apache', 'neethi'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'apache', 'velocity'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'apache', 'ws'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'apache', 'xml-resolver'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'codehaus'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'dom4j'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jaxen'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'as', 'cmp'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'as', 'ejb3'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'as', 'console'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'as', 'jaxrs'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'as', 'jpa'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'as', 'mail'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'as', 'osgi'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'as', 'web', 'main', 'lib'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'as', 'webservices'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'as', 'weld'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'as', 'xts'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'osgi'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'resteasy', 'resteasy-yaml'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'weld'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'ws'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jboss', 'xts'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'jdom'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'hibernate', 'commons-annotations'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'hibernate', 'envers'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'hibernate', 'main'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'hornetq'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'picketlink'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'projectodd', 'polyglot'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'python'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'torquebox', 'cdi'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'torquebox', 'jobs'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'torquebox', 'messaging'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'torquebox', 'security'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'torquebox', 'services'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'torquebox', 'stomp'))
-    FileUtils.rm_rf(File.join(modules_dir, 'org', 'yaml'))
-    FileUtils.rm_rf(File.join(modules_dir, 'nu'))
+    remove_module('asm')
+    remove_module('com', 'google')
+    remove_module('com', 'h2database')
+    remove_module('com', 'sun', 'jsf-impl', '1.2')
+    remove_module('com', 'sun', 'xml')
+    remove_module('gnu')
+    remove_module('javax', 'faces', 'api', '1.2')
+    remove_module('javax', 'wsdl4j')
+    remove_module('jline')
+    remove_module('org', 'antlr')
+    remove_module('org', 'apache', 'cxf')
+    remove_module('org', 'apache', 'httpcomponents')
+    remove_module('org', 'apache', 'james')
+    remove_module('org', 'apache', 'juddi')
+    remove_module('org', 'apache', 'neethi')
+    remove_module('org', 'apache', 'santuario')
+    remove_module('org', 'apache', 'velocity')
+    remove_module('org', 'apache', 'ws')
+    remove_module('org', 'apache', 'xml-resolver')
+    remove_module('org', 'codehaus')
+    remove_module('org', 'dom4j')
+    remove_module('org', 'jaxen')
+    remove_module('org', 'jboss', 'as', 'aggregate')
+    remove_module('org', 'jboss', 'as', 'appclient')
+    remove_module('org', 'jboss', 'as', 'cli')
+    remove_module('org', 'jboss', 'as', 'cmp')
+    remove_module('org', 'jboss', 'as', 'connector')
+    remove_module('org', 'jboss', 'as', 'ejb3')
+    remove_module('org', 'jboss', 'as', 'configadmin')
+    remove_module('org', 'jboss', 'as', 'console')
+    remove_module('org', 'jboss', 'as', 'domain-add-user')
+    remove_module('org', 'jboss', 'as', 'domain-http-error-context')
+    remove_module('org', 'jboss', 'as', 'domain-http-interface')
+    remove_module('org', 'jboss', 'as', 'host-controller')
+    remove_module('org', 'jboss', 'as', 'jaxr')
+    remove_module('org', 'jboss', 'as', 'jaxrs')
+    remove_module('org', 'jboss', 'as', 'jdr')
+    remove_module('org', 'jboss', 'as', 'jpa')
+    remove_module('org', 'jboss', 'as', 'jsr77')
+    remove_module('org', 'jboss', 'as', 'mail')
+    remove_module('org', 'jboss', 'as', 'management-client-content')
+    remove_module('org', 'jboss', 'as', 'messaging')
+    remove_module('org', 'jboss', 'as', 'modcluster')
+    remove_module('org', 'jboss', 'as', 'osgi')
+    remove_module('org', 'jboss', 'as', 'pojo')
+    remove_module('org', 'jboss', 'as', 'sar')
+    remove_module('org', 'jboss', 'as', 'web', 'main', 'lib')
+    remove_module('org', 'jboss', 'as', 'webservices')
+    remove_module('org', 'jboss', 'as', 'weld')
+    remove_module('org', 'jboss', 'as', 'xts')
+    remove_module('org', 'jboss', 'iiop-client')
+    remove_module('org', 'jboss', 'jaxbintros')
+    remove_module('org', 'jboss', 'osgi')
+    remove_module('org', 'jboss', 'resteasy', 'resteasy-yaml')
+    remove_module('org', 'jboss', 'shrinkwrap')
+    remove_module('org', 'jboss', 'weld')
+    remove_module('org', 'jboss', 'ws')
+    remove_module('org', 'jboss', 'xb')
+    remove_module('org', 'jboss', 'xts')
+    remove_module('org', 'jdom')
+    remove_module('org', 'hibernate', 'commons-annotations')
+    remove_module('org', 'hibernate', 'envers')
+    remove_module('org', 'hibernate', 'main')
+    remove_module('org', 'hornetq')
+    remove_module('org', 'picketlink')
+    remove_module('org', 'projectodd', 'polyglot')
+    remove_module('org', 'python')
+    remove_module('org', 'torquebox', 'cdi')
+    remove_module('org', 'torquebox', 'jobs')
+    remove_module('org', 'torquebox', 'messaging')
+    remove_module('org', 'torquebox', 'security')
+    remove_module('org', 'torquebox', 'services')
+    remove_module('org', 'torquebox', 'stomp')
+    remove_module('org', 'yaml')
+    remove_module('nu')
 
     FileUtils.rm_rf(File.join(@jboss_dir, 'welcome-content'))
+  end
+
+  def remove_module(*args)
+    FileUtils.rm_rf(File.join(@jboss_dir, 'modules', args))
   end
 
   def remove_extensions(doc)
@@ -282,7 +313,10 @@ class Assembler
     profiles = doc.root.get_elements('profile')
     profiles.each do |profile|
       web_subsystem = profile.get_elements("subsystem[contains(@xmlns, 'urn:jboss:domain:web:')]").first
-      configuration = web_subsystem.add_element('configuration')
+      configuration = web_subsystem.get_elements('configuration').first
+      if configuration.nil?
+        configuration = web_subsystem.add_element('configuration')
+      end
       jsp_configuration = configuration.get_elements('jsp-configuration').first
       if jsp_configuration.nil?
         jsp_configuration = configuration.add_element('jsp-configuration', 'disabled' => 'true')
@@ -302,6 +336,14 @@ class Assembler
 
   def windows?
     RbConfig::CONFIG['host_os'] =~ /mswin/
+  end
+
+  def edit_xml_file(path)
+    doc = REXML::Document.new(File.read(path))
+    yield doc
+    open(path, 'w') do |file|
+      doc.write(file, 4)
+    end
   end
 
 end
