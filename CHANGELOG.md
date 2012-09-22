@@ -1,3 +1,8 @@
+## 0.1.5
+
+* Fix Ruby load path issue when running under bundler standalone or
+  deployment mode with binstubs
+
 ## 0.1.4
 
 * Fall back to locating $TORQUEBOX_HOME via Ruby load path
