@@ -63,6 +63,8 @@ class TorqueBoxLiteCommand < Thor
       ENV['JBOSS_HOME'] = "#{ENV['TORQUEBOX_HOME']}/jboss"
       ENV['JRUBY_HOME'] = jruby_home
       ENV['JBOSS_OPTS'] = "-Djruby.home=#{jruby_home}"
+      # Match load-path of booted application to load-path of this script
+      ENV['RUBYLIB'] = "#{ENV['RUBYLIB']}:#{$:.join(':')}"
     end
 
     def torquebox_home
