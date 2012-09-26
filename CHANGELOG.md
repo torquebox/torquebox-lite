@@ -1,3 +1,7 @@
+## 0.1.6
+
+* Upgrade to TorqueBox 2.1.2
+
 ## 0.1.5
 
 * Fix Ruby load path issue when running under bundler standalone or
