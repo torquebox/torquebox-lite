@@ -25,6 +25,12 @@
 
     <dependency>
       <groupId>rubygems</groupId>
+      <artifactId>torquebox-configure</artifactId>
+      <version>${version.torquebox.gems}</version>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
       <artifactId>torquebox-core</artifactId>
       <version>${version.torquebox.gems}</version>
       <type>gem</type>

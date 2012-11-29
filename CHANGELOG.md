@@ -1,4 +1,11 @@
-## 0.1.6
+## 0.2.0
+
+* Upgrade to TorqueBox 2.2.0
+
+* Add torquebox-configure dependency so torquebox.rb files get parsed
+properly
+
+ ## 0.1.6
 
 * Upgrade to TorqueBox 2.1.2
 
