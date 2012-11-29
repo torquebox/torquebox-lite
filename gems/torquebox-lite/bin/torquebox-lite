@@ -112,8 +112,7 @@ class TorqueBoxLiteCommand < Thor
       options[:jvm_options] << " #{strip_jvm_properties_from_jruby_opts}"
 
       Dir.chdir(TorqueBox::DeployUtils.jboss_home) do
-        # TODO: replace .send(:jruby_opts_properties) with .jruby_opts_properties once TB 2.1.2 is out
-        TorqueBox::DeployUtils.set_java_opts("#{options[:jvm_options]} #{TorqueBox::DeployUtils.send(:jruby_opts_properties)}")
+        TorqueBox::DeployUtils.set_java_opts("#{options[:jvm_options]} #{TorqueBox::DeployUtils.jruby_opts_properties}")
         TorqueBox::DeployUtils.exec_command(TorqueBox::DeployUtils.run_command_line(options).join(' '))
       end
     end
@@ -160,32 +159,6 @@ class TorqueBoxLiteCommand < Thor
       jvm_properties.join(' ')
     end
   }
-end
-
-# TODO: remove monkey-patches below once TB 2.1.2 is out
-module TorqueBox
-  module DeployUtils
-    class << self
-      def deploy_yaml(deployment_descriptor, opts = {})
-        name = normalize_yaml_name( find_option( opts, 'name' ) || deployment_name(opts[:root] || opts['root']) )
-        dest_dir = opts[:dest_dir] || opts['dest_dir'] || deploy_dir
-        deployment = File.join( dest_dir, name )
-        File.open( deployment, 'w' ) do |file|
-          YAML.dump( deployment_descriptor, file )
-        end
-        FileUtils.touch( dodeploy_file( name, dest_dir ) )
-        [name, dest_dir]
-      end
-
-      def dodeploy_file(name, deploy_dir = DeployUtils.deploy_dir)
-        File.join( deploy_dir, "#{name}" ) + ".dodeploy"
-      end
-
-      def deployed_file(name, deploy_dir = DeployUtils.deploy_dir)
-        File.join( deploy_dir, "#{name}" ) + ".deployed"
-      end
-    end
-  end
 end
 
 TorqueBoxLiteCommand.start
