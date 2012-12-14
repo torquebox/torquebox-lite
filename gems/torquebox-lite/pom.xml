@@ -3,7 +3,7 @@
   <parent>
     <groupId>rubygems</groupId>
     <artifactId>torquebox-lite-gems-parent</artifactId>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.2.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
