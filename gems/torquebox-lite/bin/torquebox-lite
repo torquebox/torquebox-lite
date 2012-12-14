@@ -108,6 +108,7 @@ class TorqueBoxLiteCommand < Thor
 
       options[:jvm_options] ||= ''
       options[:jvm_options] << " -Dorg.torquebox.core.datasource.enabled=false"
+      options[:jvm_options] << " -Dorg.torquebox.web.force_http_connector_start=true"
       options[:jvm_options] << " -Dtorquebox.http.port=#{options[:port]}" if options[:port]
       options[:jvm_options] << " #{strip_jvm_properties_from_jruby_opts}"
 

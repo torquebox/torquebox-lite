@@ -82,7 +82,7 @@ class Assembler
       adjust_socket_bindings(doc)
       disable_management(doc)
       disable_remote_naming(doc)
-      disable_jsp(doc)
+      adjust_jboss_web(doc)
     end
   end
 
@@ -309,10 +309,14 @@ class Assembler
     end
   end
 
-  def disable_jsp(doc)
+  def adjust_jboss_web(doc)
     profiles = doc.root.get_elements('profile')
     profiles.each do |profile|
       web_subsystem = profile.get_elements("subsystem[contains(@xmlns, 'urn:jboss:domain:web:')]").first
+      # Disable the HTTP connector (gets re-enabled after boot)
+      connector = web_subsystem.get_elements("connector[@name='http']").first
+      connector.attributes['enabled'] = 'false'
+      # Disable JSP support
       configuration = web_subsystem.get_elements('configuration').first
       if configuration.nil?
         configuration = web_subsystem.add_element('configuration')

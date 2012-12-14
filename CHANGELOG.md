@@ -1,3 +1,9 @@
+## 0.2.1
+
+* Upgrade to TorqueBox 2.3.0-SNAPSHOT (local build)
+
+* Fix problem with first request of new dyno failing on Heroku
+
 ## 0.2.0
 
 * Upgrade to TorqueBox 2.2.0
