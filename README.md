@@ -22,13 +22,34 @@ there.
 
 ## Basic Usage
 
+### Installation
+
     jruby -S gem install torquebox-lite
+
+### Starting
+
     cd /path/to/your_app
     torquebox-lite
+
+### Stopping
+
+Use `CTRL+C` to kill the foreground process. You can also use `kill
+<pid>` if you started it in the background.
+
+### Bundler
 
 If using Bundler, add `torquebox-lite` to your `Gemfile` instead of
 installing it via `gem install` and then run `bundle exec
 torquebox-lite` to boot the server.
+
+### Hot deployment (redeploying without restarting the server)
+
+    touch $APP_ROOT/torquebox-lite/deployments/<app_name>-knob.yml.dodeploy
+
+The <app_name> is usually the name of the application's directory -
+take a look at the other files under that deployments directory to see
+what it should be.
+
 
 ## More Usage Examples
 
