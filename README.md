@@ -46,9 +46,9 @@ torquebox-lite` to boot the server.
 
     touch $APP_ROOT/torquebox-lite/deployments/<app_name>-knob.yml.dodeploy
 
-The <app_name> is usually the name of the application's directory -
-take a look at the other files under that deployments directory to see
-what it should be.
+The app_name is usually the name of the application's directory - take
+a look at the other files under that deployments directory to see what
+it should be.
 
 
 ## More Usage Examples
