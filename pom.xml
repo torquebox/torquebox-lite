@@ -392,8 +392,8 @@
     <version.jruby-maven-plugins>0.28.4</version.jruby-maven-plugins>
     <version.junit>4.7</version.junit>
 
-    <version.torquebox>2.3.2</version.torquebox>
-    <version.torquebox.gems>2.3.2</version.torquebox.gems>
+    <version.torquebox>3.0.0-SNAPSHOT</version.torquebox>
+    <version.torquebox.gems>3.0.0-SNAPSHOT</version.torquebox.gems>
 
     <version.rspec>2.7.0</version.rspec>
   </properties>

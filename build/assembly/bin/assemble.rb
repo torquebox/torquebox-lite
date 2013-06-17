@@ -87,16 +87,15 @@ class Assembler
   end
 
   def transform_modules
-    org_dir = "#{@jboss_dir}/modules/org"
-    edit_xml_file("#{org_dir}/jboss/jts/main/module.xml") do |doc|
+    edit_xml_file("#{@jboss_dir}/modules/system/layers/base/org/jboss/jts/main/module.xml") do |doc|
       doc.root.delete_element("dependencies/module[@name='org.hornetq']")
     end
 
-    edit_xml_file("#{org_dir}/torquebox/core/main/module.xml") do |doc|
+    edit_xml_file("#{@jboss_dir}/modules/system/layers/torquebox/org/torquebox/core/main/module.xml") do |doc|
       doc.root.delete_element("dependencies/module[@name='org.jboss.as.connector']")
     end
 
-    edit_xml_file("#{org_dir}/jboss/as/server/main/module.xml") do |doc|
+    edit_xml_file("#{@jboss_dir}/modules/system/layers/base/org/jboss/as/server/main/module.xml") do |doc|
       doc.root.delete_element("dependencies/module[@name='org.jboss.as.domain-http-interface']")
     end
   end
@@ -154,7 +153,6 @@ class Assembler
     remove_module('gnu')
     remove_module('javax', 'faces', 'api', '1.2')
     remove_module('javax', 'wsdl4j')
-    remove_module('jline')
     remove_module('org', 'antlr')
     remove_module('org', 'apache', 'cxf')
     remove_module('org', 'apache', 'httpcomponents')
@@ -211,27 +209,35 @@ class Assembler
     remove_module('org', 'hibernate', 'main')
     remove_module('org', 'hornetq')
     remove_module('org', 'picketlink')
-    remove_module('org', 'projectodd', 'polyglot-cache')
-    remove_module('org', 'projectodd', 'polyglot-hasingleton')
-    remove_module('org', 'projectodd', 'polyglot-jobs')
-    remove_module('org', 'projectodd', 'polyglot-messaging')
-    remove_module('org', 'projectodd', 'polyglot-stomp')
-    remove_module('org', 'projectodd', 'polyglot-xa')
     remove_module('org', 'python')
-    remove_module('org', 'torquebox', 'cdi')
-    remove_module('org', 'torquebox', 'jobs')
-    remove_module('org', 'torquebox', 'messaging')
-    remove_module('org', 'torquebox', 'security')
-    remove_module('org', 'torquebox', 'services')
-    remove_module('org', 'torquebox', 'stomp')
     remove_module('org', 'yaml')
     remove_module('nu')
+    remove_polyglot_module('polyglot-cache')
+    remove_polyglot_module('polyglot-hasingleton')
+    remove_polyglot_module('polyglot-jobs')
+    remove_polyglot_module('polyglot-messaging')
+    remove_polyglot_module('polyglot-stomp')
+    remove_polyglot_module('polyglot-xa')
+    remove_torquebox_module('cdi')
+    remove_torquebox_module('jobs')
+    remove_torquebox_module('messaging')
+    remove_torquebox_module('security')
+    remove_torquebox_module('services')
+    remove_torquebox_module('stomp')
 
     FileUtils.rm_rf(File.join(@jboss_dir, 'welcome-content'))
   end
 
   def remove_module(*args)
-    FileUtils.rm_rf(File.join(@jboss_dir, 'modules', args))
+    FileUtils.rm_rf(File.join(@jboss_dir, 'modules', 'system', 'layers', 'base', args))
+  end
+
+  def remove_polyglot_module(*args)
+    FileUtils.rm_rf(File.join(@jboss_dir, 'modules', 'system', 'layers', 'polyglot', 'org', 'projectodd', args))
+  end
+
+  def remove_torquebox_module(*args)
+    FileUtils.rm_rf(File.join(@jboss_dir, 'modules', 'system', 'layers', 'torquebox', 'org', 'torquebox', args))
   end
 
   def remove_extensions(doc)
