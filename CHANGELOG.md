@@ -1,3 +1,7 @@
+## 0.3.0
+
+* Upgrade to TorqueBox 3.0.0.beta1, reducing gem size by 15MB
+
 ## 0.2.2
 
 * Upgrade to TorqueBox 2.3.2

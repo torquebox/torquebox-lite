@@ -3,7 +3,7 @@
   <parent>
     <groupId>rubygems</groupId>
     <artifactId>torquebox-lite-gems-parent</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.3.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -90,6 +90,7 @@
                 end
                 cp( %Q(${basedir}/../../build/assembly/target/stage/torquebox/jboss),
                     %Q(${basedir}/target/torquebox-lite) )
+                FileUtils.chmod( 0755, "${basedir}/target/torquebox-lite/jboss/bin/standalone.sh" )
               </script>
             </configuration>
           </execution>
