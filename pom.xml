@@ -167,7 +167,7 @@
         <module>docs</module>
       </modules>
     </profile>
- 
+
     <profile>
       <id>site-1.8-only</id>
       <activation>
@@ -361,7 +361,7 @@
     </profile>
 
   </profiles>
-    
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -392,8 +392,8 @@
     <version.jruby-maven-plugins>0.28.4</version.jruby-maven-plugins>
     <version.junit>4.7</version.junit>
 
-    <version.torquebox>3.0.0.beta1</version.torquebox>
-    <version.torquebox.gems>3.0.0.beta1</version.torquebox.gems>
+    <version.torquebox>3.0.0</version.torquebox>
+    <version.torquebox.gems>3.0.0</version.torquebox.gems>
 
     <version.rspec>2.7.0</version.rspec>
   </properties>
@@ -421,13 +421,13 @@
       <resource>
         <directory>src/main/resources</directory>
       </resource>
-      <resource> 
-        <directory>src/main/java</directory> 
+      <resource>
+        <directory>src/main/java</directory>
         <includes>
           <include>**/*.rb</include>
           <include>**/*.properties</include>
         </includes>
-      </resource> 
+      </resource>
     </resources>
     <plugins>
       <plugin>
