@@ -1,5 +1,7 @@
 # Releasing
 
+Make sure CHANGELOG.md is up-to-date.
+
 Substitute ${release_version} for the version being released and
 ${dev_version} for the next development version - ie
 ${release_version} of 0.1.0 and ${dev_version} of 0.1.1-SNAPSHOT.
