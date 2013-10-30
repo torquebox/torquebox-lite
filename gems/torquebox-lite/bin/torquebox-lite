@@ -104,8 +104,9 @@ class TorqueBoxLiteCommand < Thor
 
       options[:pass_through] ||= ''
       options[:pass_through] << " -Djboss.server.base.dir=#{base_dir}"
-      options[:pass_through] << " -Djboss.server.config.dir=#{config_dir}"
-
+      unless options[:pass_through].include?('-Djboss.server.config.dir')
+        options[:pass_through] << " -Djboss.server.config.dir=#{config_dir}"
+      end
       options[:jvm_options] ||= ''
       options[:jvm_options] << " -Dorg.torquebox.core.datasource.enabled=false"
       options[:jvm_options] << " -Dorg.torquebox.web.force_http_connector_start=true"
