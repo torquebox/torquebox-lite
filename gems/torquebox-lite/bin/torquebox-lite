@@ -120,7 +120,7 @@ class TorqueBoxLiteCommand < Thor
     end
 
     def create_deployment_descriptor(options, deploy_dir)
-      opts = {:root => Dir.pwd, :dest_dir => deploy_dir}
+      opts = {:root => ENV['BASEDIR'] || Dir.pwd, :dest_dir => deploy_dir}
       descriptor = TorqueBox::DeployUtils.basic_deployment_descriptor(opts)
 
       min_runtimes = options[:min_runtimes]
