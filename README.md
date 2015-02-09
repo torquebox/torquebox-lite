@@ -1,3 +1,15 @@
+## Replaced by TorqueBox 4
+TorqueBox 4 has replaced the need to have a TorqueBox Lite, since
+TorqueBox 4 is itself modular and light. If you're just interested
+in web bits, use the `torquebox-web` gem version 4.0.0.alpha1 or later.
+
+<http://torquebox.org/news/tags/4x/>
+
+No further releases of the `torquebox-lite` gem are planned.
+
+TorqueBox Lite has a known incompatibility with Java 8, providing
+further motivation to migrate to `torquebox-web` instead.
+
 # TorqueBox Lite
 
 This is a smaller, web-only version of [TorqueBox][]. The main goal is
