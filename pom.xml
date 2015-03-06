@@ -10,7 +10,7 @@
 
   <groupId>org.torquebox</groupId>
   <artifactId>torquebox-lite-parent</artifactId>
-  <version>0.3.2-SNAPSHOT</version>
+  <version>0.3.3-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>TorqueBox Lite</name>
   <url>http://torquebox.org/</url>
@@ -389,11 +389,11 @@
   </dependencyManagement>
 
   <properties>
-    <version.jruby-maven-plugins>0.28.4</version.jruby-maven-plugins>
+    <version.jruby-maven-plugins>1.0.4</version.jruby-maven-plugins>
     <version.junit>4.7</version.junit>
 
-    <version.torquebox>3.0.0</version.torquebox>
-    <version.torquebox.gems>3.0.0</version.torquebox.gems>
+    <version.torquebox>3.1.1</version.torquebox>
+    <version.torquebox.gems>3.1.1</version.torquebox.gems>
 
     <version.rspec>2.7.0</version.rspec>
   </properties>
@@ -567,7 +567,7 @@
                       gem-maven-plugin
                     </artifactId>
                     <versionRange>
-                      [0.28.4-SNAPSHOT,)
+                      [1.0.4-SNAPSHOT,)
                     </versionRange>
                     <goals>
                       <goal>install</goal>
@@ -582,7 +582,7 @@
                   <pluginExecutionFilter>
                     <groupId>de.saumya.mojo</groupId>
                     <artifactId>jruby-maven-plugin</artifactId>
-                    <versionRange>[0.28.4,)</versionRange>
+                    <versionRange>[1.0.4,)</versionRange>
                     <goals>
                       <goal>jruby</goal>
                     </goals>
